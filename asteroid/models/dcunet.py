@@ -1,3 +1,4 @@
+import torch
 from asteroid_filterbanks import make_enc_dec
 from asteroid_filterbanks.transforms import from_torch_complex, to_torch_complex
 from ..masknn.convolutional import DCUMaskNet

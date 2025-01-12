@@ -223,6 +223,20 @@ class BaseEncoderMaskerDecoder(BaseModel):
         reconstructed = pad_x_to_y(decoded, wav)
         return _shape_reconstructed(reconstructed, shape)
 
+    def get_masker_working_size(self, n_samples: int) -> int:
+        """Get the masker's internal working size for an input of `n_samples`.
+
+        Generally, if `fix_length_mode = "pad"`, the internal working size is
+        `>= n_samples`, otherwise it is `<= n_samples`.
+        """
+        x = torch.zeros(1, 1, n_samples)
+        tf_rep = self.forward_encoder(x)
+        tf_rep = self.masker.fix_input_dims(tf_rep)
+        masked = self.apply_masks(tf_rep, 1)
+        decoded = self.forward_decoder(masked)
+        return decoded.shape[-1]
+
+
     def forward_encoder(self, wav: torch.Tensor) -> torch.Tensor:
         """Computes time-frequency representation of `wav`.
 

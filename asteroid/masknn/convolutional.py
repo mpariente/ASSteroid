@@ -516,7 +516,20 @@ class DCUMaskNet(BaseDCUMaskNet):
     Input shape is expected to be $(batch, nfreqs, time)$, with $nfreqs - 1$ divisible
     by $f_0 * f_1 * ... * f_N$ where $f_k$ are the frequency strides of the encoders,
     and $time - 1$ is divisible by $t_0 * t_1 * ... * t_N$ where $t_N$ are the time
-    strides of the encoders.
+    strides of the encoders. If `fix_length_mode` is not `None`, the time dimension
+    may is automatically padded or trimmed to a valid size before running it through
+    the network.
+
+    .. note::
+       If using `fix_length_mode="trim"`, the network's output will be all-zero at the
+       trimmed time-steps. You might want to ignore those time-steps in your loss function.
+
+       The time-domain length of the network's internal working size (the trimmed size)
+       can be retrieved using :meth:`~asteroid.models.BaseDCUNet.get_masker_working_size`::
+
+          >>> dcu16 = DCUNet("DCUNet-16", fix_length_mode="trim")
+          >>> dcu16.get_masker_working_size(3 * 16000)
+          45568
 
     References
         [1] : "Phase-aware Speech Enhancement with Deep Complex U-Net",
