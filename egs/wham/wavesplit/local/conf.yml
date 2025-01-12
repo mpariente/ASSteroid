@@ -1,0 +1,25 @@
+# Network config
+masknet:
+  n_src: 2
+
+# Training config
+training:
+  epochs: 200
+  batch_size: 4
+  num_workers: 6
+  half_lr: yes
+  early_stop: yes
+  gradient_clipping: 5
+# Optim config
+optim:
+  optimizer: adam
+  lr: 0.001
+# Data config
+data:
+  train_dir: data/wav8k/min/tr/
+  valid_dir: data/wav8k/min/cv/
+  task: sep_clean
+  nondefault_nsrc:
+  sample_rate: 8000
+  mode: min
+  segment: 1.0
