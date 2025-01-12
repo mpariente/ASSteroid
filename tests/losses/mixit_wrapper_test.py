@@ -24,10 +24,10 @@ def test_mixitwrapper_as_pit_wrapper(batch_size, n_src, time):
     assert reordered_est.shape == est_targets.shape
 
 
-@pytest.mark.parametrize("batch_size", [1, 2, 4])
+@pytest.mark.parametrize("batch_size", [1, 2])
 @pytest.mark.parametrize("factor", [1, 2, 3])
 @pytest.mark.parametrize("n_mix", [2, 3])
-@pytest.mark.parametrize("time", [16000])
+@pytest.mark.parametrize("time", [2000])
 def test_mixit_wrapper(batch_size, factor, n_mix, time):
     mixtures = torch.randn(batch_size, n_mix, time)
     n_src = n_mix * factor

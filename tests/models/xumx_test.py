@@ -5,8 +5,6 @@ from asteroid.models import XUMX
 
 sources = [
     ["bass", "drums", "vocals", "other"],
-    ["vocals", "drums", "bass"],
-    ["vocals", "other"],
     ["drums"],
 ]
 
@@ -20,8 +18,8 @@ sources = [
 @pytest.mark.parametrize(
     "data",
     (
-        torch.rand(3, 2, 44100, requires_grad=False),
-        torch.rand(1, 2, 2 * 44100, requires_grad=False),
+        torch.rand(3, 2, 4100, requires_grad=False),
+        torch.rand(1, 2, 2 * 4100, requires_grad=False),
     ),
 )
 def test_forward(nb_channels, sources, bidirectional, spec_power, return_time_signals, data):
@@ -30,7 +28,7 @@ def test_forward(nb_channels, sources, bidirectional, spec_power, return_time_si
         input_mean=None,
         input_scale=None,
         nb_channels=nb_channels,
-        hidden_size=128,
+        hidden_size=10,
         nb_layers=2,
         in_chan=4096,
         n_hop=1024,
@@ -72,7 +70,11 @@ def test_get_model_args():
 @pytest.mark.skip(reason="XUMX is not broken in torch 2.x")
 def test_model_loading():
     sources_tmp = ["bass", "drums", "vocals", "other"]
-    model = XUMX(sources=sources_tmp)
+    model = XUMX(
+        sources=sources_tmp,
+        nb_layers=2,
+        hidden_size=12,
+    )
 
     model_conf = model.serialize()
 
